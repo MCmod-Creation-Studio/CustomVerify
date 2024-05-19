@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         CustomVerify
 // @namespace    mcmod
-// @version      0.1
+// @version      0.2
 // @description  Custom verify content in editor before submitting
 // @author       寒冽
 // @match        https://www.mcmod.cn/*
-// @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+// @icon         https://www.mcmod.cn/images/favicon.ico
 // @grant        none
 // ==/UserScript==
 
@@ -39,12 +39,17 @@
         // Example
         const content = removeHtmlTag(editor.getContent()).trim();
 
+        if (content.includes("测试")) {
+            result.error[Object.keys(result.error).length] = customErrors.exampleError1;
+        }
+
         if (content.length > 100) {
             result.warning[Object.keys(result.warning).length] = customWarnings.exampleWarning1;
         }
 
-        if (content.includes("测试")) {
-            result.error[Object.keys(result.error).length] = customErrors.exampleError1;
+        const keywords = ["测试1", "测试2"];
+        if (keywords.some(keyword => content.includes(keyword))) {
+            result.warning[Object.keys(result.warning).length] = customWarnings.exampleWarning2;
         }
 
         if (content.length > 200) {
