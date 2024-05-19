@@ -20,23 +20,6 @@
 
         const result = originalGetDataVerify(t);
 
-        // Info
-        const customErrors = {
-            "exampleError1": "Error1",
-            "exampleError2": "Error2"
-        };
-
-        const customWarnings = {
-            "exampleWarning1": "Warning1",
-            "exampleWarning2": "Warning2"
-        };
-
-        const customInfos = {
-            "exampleInfo1": "Info1",
-            "exampleInfo2": "Info2"
-        };
-
-
         function Verify(condition, level, message) {
             if (condition) {
                 switch (level) {
@@ -58,6 +41,22 @@
         // Example
         const content = removeHtmlTag(editor.getContent()).trim();
 
+        // Info
+        const customErrors = {
+            "exampleError1": "Error1",
+            "exampleError2": "Error2"
+        };
+
+        const customWarnings = {
+            "exampleWarning1": "Warning1",
+            "exampleWarning2": "Warning2"
+        };
+
+        const customInfos = {
+            "exampleInfo1": "Info1",
+            "exampleInfo2": "Info2"
+        };
+        
         /*
         if (content.includes("测试")) {
             result.error[Object.keys(result.error).length] = customErrors.exampleError1;
@@ -77,12 +76,14 @@
         }
         */
 
+        /*
         Verify(content.includes("测试"), "error", customErrors.exampleError1);
         Verify(content.length > 100, "warning", customWarnings.exampleWarning1);
         const keywords = ["测试1", "测试2", "背包"];
         Verify(keywords.some(keyword => content.includes(keyword)), "warning", "含自定义用语");
         Verify(content.length > 200, "info", customInfos.exampleInfo1);
-
+        */
+        
         return result;
     };
 
