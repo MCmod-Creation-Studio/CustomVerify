@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CustomVerify
 // @namespace    mcmod
-// @version      0.4
+// @version      0.5
 // @description  Custom verify content in editor before submitting
 // @author       寒冽
 // @match        https://www.mcmod.cn/*
@@ -45,9 +45,9 @@
         }
 
         // Example
-        Verify(isenameChineseInput(), "Warning", "次要名称含中文。");
-        Verify(containsBilibiliSpmId(), "Warning", "相关链接含追踪。");
-        Verify(!CurseForgeProjectID(), "error", "CurseForge Project ID格式错误。");
+        Verify(isenameChineseInput(), "warning", "次要名称含中文。");
+        Verify(containsBilibiliSpmId(), "warning", "相关链接含追踪。");
+        Verify(CurseForgeProjectID(), "error", "CurseForge Project ID格式错误。");
         Verify(isCategory15Selected(), "info", "是国创整合包。");
         Verify(isTooShort(), "warning", "正文过短。");
 
@@ -57,32 +57,46 @@
 
     function isenameChineseInput() {
         // 获取 次要名称 内容
-        const input = document.querySelector('input[data-multi-id="ename"]').value;
+        const inputElement = document.querySelector('input[data-multi-id="ename"]');
 
-        // 中文字符
-        const chineseRegex = /[\u4e00-\u9fa5]/;
-        return chineseRegex.test(input);
+        if (inputElement) {
+            const input = inputElement.value;
+            if (!input) {
+                // 中文字符
+                const chineseRegex = /[\u4e00-\u9fa5]/;
+                return chineseRegex.test(input);
+            }
+        }
+        return false;
     }
 
-    function CurseForgeProjectID() {
-        const input = document.querySelector('input[data-multi-id="cfprojectid"]').value;
 
-        // 数字（组）或空
-        const numericRegex = /^(\d+(,\d+)*)?$/;
-        return numericRegex.test(input);
+
+    function CurseForgeProjectID() {
+        const inputElement = document.querySelector('input[data-multi-id="cfprojectid"]');
+
+        if (inputElement) {
+            const input = inputElement.value;
+            if (!input) {
+                // 数字（组）或空
+                const numericRegex = /^(\d+(,\d+)*)?$/;
+                return !(numericRegex.test(input));
+            }
+        }
+        return false;
     }
 
     function containsBilibiliSpmId() {
         // 获取 class="link-text-href" 的 input 元素
-        const inputElement = document.querySelector('input.link-text-href');
+        const input = document.querySelector('input.link-text-href');
 
         // 不存在直接返回 false
-        if (!inputElement) {
+        if (!input) {
             return false;
         }
 
         // 获取输入的值
-        const inputValue = inputElement.value;
+        const inputValue = input.value;
 
         // 检查输入的值是否包含 "/?spm_id_from="
         return inputValue.includes("/?spm_id_from=");
